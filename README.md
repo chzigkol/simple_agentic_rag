@@ -20,7 +20,7 @@ uv sync --extra dev
 uv run pytest
 uv run ruff check .
 uv run mypy
-uv run agentic-rag-evaluate --dataset evaluation_dataset.csv
+uv run agentic-rag-evaluate --dataset datasets/evaluation_dataset.csv
 ```
 
 Notebook examples should live in `notebooks/` and import from the package.
@@ -32,7 +32,7 @@ OpenTelemetry tracing is disabled by default. Enable local console spans with:
 ```bash
 OTEL_TRACING_ENABLED=true \
 OTEL_TRACES_EXPORTER=console \
-uv run agentic-rag-evaluate --dataset evaluation_dataset.csv --max-examples 1
+uv run agentic-rag-evaluate --dataset datasets/evaluation_dataset.csv --max-examples 1
 ```
 
 Write traces to a local file:
@@ -41,7 +41,7 @@ Write traces to a local file:
 OTEL_TRACING_ENABLED=true \
 OTEL_TRACES_EXPORTER=file \
 OTEL_TRACES_FILE=otel_traces/agentic_rag_traces.jsonl \
-uv run agentic-rag-evaluate --dataset evaluation_dataset.csv --max-examples 1
+uv run agentic-rag-evaluate --dataset datasets/evaluation_dataset.csv --max-examples 1
 ```
 
 To export to an OTLP collector:
@@ -50,5 +50,5 @@ To export to an OTLP collector:
 OTEL_TRACING_ENABLED=true \
 OTEL_TRACES_EXPORTER=otlp \
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317 \
-uv run agentic-rag-evaluate --dataset evaluation_dataset.csv --max-examples 1
+uv run agentic-rag-evaluate --dataset datasets/evaluation_dataset.csv --max-examples 1
 ```

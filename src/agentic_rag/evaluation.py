@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 import pandas as pd
@@ -63,7 +64,8 @@ def score_retrieval(
 
 def load_examples(path: str) -> list[EvaluationExample]:
     """Load evaluation examples from CSV."""
-    df = pd.read_csv(path)
+    dataset_path = Path(path)
+    df = pd.read_csv(dataset_path)
     if "Query" in df.columns:
         df = df.rename(
             columns={
@@ -71,19 +73,183 @@ def load_examples(path: str) -> list[EvaluationExample]:
                 "Expected_Source_Type": "expected_source_type",
             }
         )
+    resolver = _ExpectedDocIdResolver.from_dataset_path(dataset_path)
     examples: list[EvaluationExample] = []
     for _, row in df.iterrows():
+        csv_doc_ids = parse_doc_ids(row.get("expected_doc_ids", ""))
         examples.append(
             EvaluationExample(
                 query=str(row["query"]),
                 expected_source_type=SourceType(str(row["expected_source_type"])),
                 expected_collection=str(row.get("expected_collection") or ""),
-                expected_doc_ids=parse_doc_ids(row.get("expected_doc_ids", "")),
+                expected_doc_ids=resolver.resolve(row) or csv_doc_ids,
                 expected_answer=str(row.get("expected_answer") or ""),
                 category=str(row.get("category") or ""),
             )
         )
     return examples
+
+
+class _ExpectedDocIdResolver:
+    """Resolve eval CSV gold rows to the document IDs used by Chroma."""
+
+    def __init__(
+        self,
+        *,
+        qna_id_by_question_answer: dict[tuple[str, str], str],
+        qna_ids_by_question: dict[str, list[str]],
+        device_lookup_rows: list[dict[str, str]],
+    ) -> None:
+        self._qna_id_by_question_answer = qna_id_by_question_answer
+        self._qna_ids_by_question = qna_ids_by_question
+        self._device_lookup_rows = device_lookup_rows
+
+    @classmethod
+    def empty(cls) -> _ExpectedDocIdResolver:
+        return cls(
+            qna_id_by_question_answer={},
+            qna_ids_by_question={},
+            device_lookup_rows=[],
+        )
+
+    @classmethod
+    def from_dataset_path(cls, path: Path) -> _ExpectedDocIdResolver:
+        datasets_dir = cls._find_datasets_dir(path)
+        if datasets_dir is None:
+            return cls.empty()
+
+        qna_path = datasets_dir / "medical_qna_dataset.csv"
+        device_path = datasets_dir / "medical_device_manuals_dataset.csv"
+        qna_df = _read_csv_or_empty(qna_path)
+        device_df = _read_csv_or_empty(device_path)
+
+        return cls(
+            qna_id_by_question_answer=cls._build_qna_question_answer_lookup(qna_df),
+            qna_ids_by_question=cls._build_qna_question_lookup(qna_df),
+            device_lookup_rows=cls._build_device_lookup_rows(device_df),
+        )
+
+    @staticmethod
+    def _find_datasets_dir(path: Path) -> Path | None:
+        candidates = [path.parent, path.parent / "datasets"]
+        for candidate in candidates:
+            if (
+                (candidate / "medical_qna_dataset.csv").exists()
+                or (candidate / "medical_device_manuals_dataset.csv").exists()
+            ):
+                return candidate
+        return None
+
+    @staticmethod
+    def _build_qna_question_answer_lookup(
+        qna_df: pd.DataFrame,
+    ) -> dict[tuple[str, str], str]:
+        if qna_df.empty or not {"Question", "Answer"}.issubset(qna_df.columns):
+            return {}
+        return {
+            (_normalize_text(row["Question"]), _normalize_text(row["Answer"])): (
+                f"qna-{row_index}"
+            )
+            for row_index, row in qna_df.reset_index(drop=True).iterrows()
+        }
+
+    @staticmethod
+    def _build_qna_question_lookup(qna_df: pd.DataFrame) -> dict[str, list[str]]:
+        if qna_df.empty or "Question" not in qna_df.columns:
+            return {}
+
+        ids_by_question: dict[str, list[str]] = {}
+        for row_index, row in qna_df.reset_index(drop=True).iterrows():
+            ids_by_question.setdefault(_normalize_text(row["Question"]), []).append(
+                f"qna-{row_index}"
+            )
+        return ids_by_question
+
+    @staticmethod
+    def _build_device_lookup_rows(device_df: pd.DataFrame) -> list[dict[str, str]]:
+        device_answer_columns = [
+            "Indications_for_Use",
+            "Contraindications",
+            "Patient_Population",
+        ]
+        lookup_rows = []
+        for row_index, row in device_df.reset_index(drop=True).iterrows():
+            for column in device_answer_columns:
+                if column not in row or pd.isna(row[column]):
+                    continue
+                lookup_rows.append(
+                    {
+                        "doc_id": f"device-{row_index}",
+                        "answer": _normalize_text(row[column]),
+                        "device_name": _normalize_text(row.get("Device_Name", "")),
+                        "model_number": _normalize_text(row.get("Model_Number", "")),
+                    }
+                )
+        return lookup_rows
+
+    def resolve(self, row: pd.Series) -> list[str]:
+        source = _source_from_value(str(row["expected_source_type"]))
+        query = _normalize_text(row["query"])
+        expected_answer = _normalize_text(row.get("expected_answer", ""))
+
+        if source == SourceType.RETRIEVE_QNA:
+            exact_match = self._qna_id_by_question_answer.get((query, expected_answer))
+            if exact_match:
+                return [exact_match]
+            return self._qna_ids_by_question.get(query, [])
+
+        if source == SourceType.RETRIEVE_DEVICE:
+            candidates = [
+                item
+                for item in self._device_lookup_rows
+                if item["answer"] == expected_answer
+            ]
+            model_matches = [
+                item
+                for item in candidates
+                if item["model_number"] and item["model_number"] in query
+            ]
+            if model_matches:
+                return _unique_sorted_doc_ids(model_matches)
+            named_matches = [
+                item
+                for item in candidates
+                if item["device_name"] and item["device_name"] in query
+            ]
+            if named_matches:
+                return _unique_sorted_doc_ids(named_matches)
+            return _unique_sorted_doc_ids(candidates)
+
+        return []
+
+
+def _source_from_value(value: str) -> SourceType | None:
+    try:
+        source = SourceType(value)
+    except ValueError:
+        return None
+    if source in {SourceType.RETRIEVE_QNA, SourceType.RETRIEVE_DEVICE}:
+        return source
+    return None
+
+
+def _read_csv_or_empty(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        return pd.DataFrame()
+    try:
+        return pd.read_csv(path)
+    except pd.errors.EmptyDataError:
+        return pd.DataFrame()
+
+
+def _normalize_text(value: object) -> str:
+    if value is None or pd.isna(value):
+        return ""
+    return " ".join(str(value).lower().split())
+
+
+def _unique_sorted_doc_ids(rows: list[dict[str, str]]) -> list[str]:
+    return sorted({row["doc_id"] for row in rows})
 
 
 async def evaluate_examples(

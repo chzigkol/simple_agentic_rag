@@ -62,7 +62,7 @@ async def run_evaluate(args: argparse.Namespace) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Agentic RAG CLI")
-    parser.add_argument("--dataset", default="evaluation_dataset.csv")
+    parser.add_argument("--dataset", default="datasets/evaluation_dataset.csv")
     parser.add_argument("--output", default="evaluation_results_package.csv")
     parser.add_argument("--summary-output", default="evaluation_summary_package.json")
     parser.add_argument("--router", choices=["heuristic", "llm"], default="heuristic")

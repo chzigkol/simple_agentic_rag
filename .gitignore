@@ -222,3 +222,4 @@ otel_traces/
 output/
 .deepeval/
 chroma_db/
+.DS_Store
