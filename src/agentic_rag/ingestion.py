@@ -2,11 +2,12 @@
 
 from collections.abc import Iterable
 from contextlib import suppress
-from typing import Any
+from typing import Any, cast
 
-import chromadb
 import pandas as pd
+from chromadb.api import ClientAPI
 from chromadb.api.models.Collection import Collection
+from chromadb.api.types import PyEmbeddings
 from sklearn.feature_extraction.text import HashingVectorizer
 
 from agentic_rag.constants import DEVICE_COLLECTION, QNA_COLLECTION
@@ -14,7 +15,7 @@ from agentic_rag.constants import DEVICE_COLLECTION, QNA_COLLECTION
 EMBEDDING_DIMENSIONS = 512
 
 
-def embed_texts(texts: Iterable[str]) -> list[list[float]]:
+def embed_texts(texts: Iterable[str]) -> PyEmbeddings:
     """Create deterministic local embeddings without external model downloads."""
     vectorizer = HashingVectorizer(
         n_features=EMBEDDING_DIMENSIONS,
@@ -22,11 +23,12 @@ def embed_texts(texts: Iterable[str]) -> list[list[float]]:
         norm="l2",
         ngram_range=(1, 2),
     )
-    return vectorizer.transform(list(texts)).toarray().astype(float).tolist()
+    embeddings = vectorizer.transform(list(texts)).toarray().astype(float).tolist()
+    return cast(PyEmbeddings, embeddings)
 
 
 def ensure_chroma_collections(
-    client: chromadb.ClientAPI,
+    client: ClientAPI,
     qna_df: pd.DataFrame,
     device_df: pd.DataFrame,
     *,
@@ -71,7 +73,7 @@ def ensure_chroma_collections(
 
 
 def _get_collection_with_expected_dimension(
-    client: chromadb.ClientAPI,
+    client: ClientAPI,
     collection_name: str,
 ) -> Collection:
     collection = client.get_or_create_collection(
