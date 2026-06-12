@@ -6,13 +6,6 @@ Production-oriented Python package for routing medical questions across:
 - medical device manual retrieval
 - web search fallback
 
-The importable package lives at `src/agentic_rag`. The distribution name uses a
-hyphen (`agentic-rag`), while Python imports use an underscore:
-
-```python
-from agentic_rag import AgenticRAG
-```
-
 ## Common Commands
 
 ```bash
