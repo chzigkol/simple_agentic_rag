@@ -96,6 +96,9 @@ This repo breaks the system into an evaluation ladder:
 │   ├── telemetry.py
 │   └── web_search.py
 └── tests/
+    ├── unit/
+    ├── integration/
+    └── e2e/
 ```
 
 The importable package lives at `src/agentic_rag`. The distribution name uses a
@@ -164,6 +167,14 @@ Run tests:
 
 ```bash
 uv run pytest
+```
+
+Run a specific test tier:
+
+```bash
+uv run pytest tests/unit
+uv run pytest tests/integration
+uv run pytest tests/e2e
 ```
 
 Run linting and type checks:
