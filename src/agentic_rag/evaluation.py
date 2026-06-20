@@ -5,7 +5,7 @@ from __future__ import annotations
 import asyncio
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import pandas as pd
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
@@ -243,7 +243,7 @@ def _read_csv_or_empty(path: Path) -> pd.DataFrame:
 
 
 def _normalize_text(value: object) -> str:
-    if value is None or pd.isna(value):
+    if value is None or bool(pd.isna(cast(Any, value))):
         return ""
     return " ".join(str(value).lower().split())
 
