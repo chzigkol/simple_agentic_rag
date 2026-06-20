@@ -29,6 +29,22 @@ Supported routes:
 - `Web_Search`: current facts, recent news, future events, or questions outside
   the local datasets.
 
+## Use Case Flow
+
+```mermaid
+flowchart LR
+    A[User query] --> B[Route query]
+    B --> C{Best source?}
+    C -->|Medical Q&A| D[Q&A retrieval]
+    C -->|Device manual| E[Device retrieval]
+    C -->|Current or external| F[Web search]
+    D --> G[Context]
+    E --> G
+    F --> G
+    G --> H[Generate answer]
+    H --> I[Final answer]
+```
+
 ## Why This Repo Exists
 
 The main lesson is that agentic systems should be evaluated one stage at a time.
