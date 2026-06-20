@@ -55,6 +55,11 @@ out of the project.
    datasets/challenging_router_evaluation_dataset.csv
    ```
 
+   The source datasets are available on Kaggle:
+
+   - `medical_device_manuals_dataset.csv`: [Global Medical Device Manuals Dataset 2025](https://www.kaggle.com/datasets/pratyushpuri/global-medical-device-manuals-dataset-2025/data)
+   - `medical_qna_dataset.csv`: [Comprehensive Medical Q&A Dataset](https://www.kaggle.com/datasets/thedevastator/comprehensive-medical-q-a-dataset)
+
    The important idea is that evaluation quality depends on clear examples,
    expected routes, expected answers, and expected document IDs where available.
 

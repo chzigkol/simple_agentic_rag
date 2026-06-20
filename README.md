@@ -102,6 +102,13 @@ This repo breaks the system into an evaluation ladder:
     └── e2e/
 ```
 
+## Dataset Sources
+
+The local CSV files under `datasets/` are based on public Kaggle datasets:
+
+- `medical_device_manuals_dataset.csv`: [Global Medical Device Manuals Dataset 2025](https://www.kaggle.com/datasets/pratyushpuri/global-medical-device-manuals-dataset-2025/data)
+- `medical_qna_dataset.csv`: [Comprehensive Medical Q&A Dataset](https://www.kaggle.com/datasets/thedevastator/comprehensive-medical-q-a-dataset)
+
 The importable package lives at `src/agentic_rag`. The distribution name uses a
 hyphen (`agentic-rag`), while Python imports use an underscore:
 
