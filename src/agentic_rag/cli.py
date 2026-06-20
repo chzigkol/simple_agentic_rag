@@ -25,6 +25,11 @@ def build_pipeline(settings: Settings, *, router_mode: str) -> AgenticRAG:
         timeout=settings.openai_timeout,
     )
     router = QueryRouter(generator=generator, mode=router_mode)
+    web_searcher = (
+        TavilyWebSearcher(tavily_api_key=settings.tavily_api_key)
+        if settings.tavily_api_key
+        else None
+    )
     return AgenticRAG(
         router=router,
         retriever=ChromaRetriever(
@@ -32,7 +37,7 @@ def build_pipeline(settings: Settings, *, router_mode: str) -> AgenticRAG:
             top_k=settings.top_k,
         ),
         generator=generator,
-        web_searcher=TavilyWebSearcher(),
+        web_searcher=web_searcher,
     )
 
 

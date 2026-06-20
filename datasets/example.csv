@@ -1,0 +1,2 @@
+query,expected_source_type,expected_collection,expected_doc_ids,expected_answer,category
+Who will win the FIFA World Cup 2026?,Web_Search,,,,out_of_domain
