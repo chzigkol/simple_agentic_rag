@@ -9,6 +9,10 @@ how to move from "the demo worked" to measurable, inspectable engineering
 signals: routing accuracy, retrieval quality, fallback behavior, answer-quality
 proxies, traces, and ablation experiments.
 
+If you are new to the project, start with
+[NEWCOMER_GUIDE.md](NEWCOMER_GUIDE.md) for the recommended reading and
+execution path.
+
 ## What The System Does
 
 Given a user query, the pipeline:
@@ -127,15 +131,15 @@ Each notebook has a matching theory note in `docs/`.
 
 | Step | Notebook | Focus |
 | --- | --- | --- |
-| 00 | `00_simple_agentic_rag.ipynb` | Minimal end-to-end system walkthrough |
-| 01 | `01_data_and_chroma_sanity_check.ipynb` | Dataset schema, missing values, collection counts, smoke retrieval |
-| 02 | `02_router_evaluation.ipynb` | Router accuracy, precision/recall/F1 by route, confusion matrix |
-| 03 | `03_retrieval_evaluation.ipynb` | Precision@k, Recall@k, Hit@k, MRR, top-k behavior |
-| 04 | `04_router_retrieval_cascade.ipynb` | Expected-source vs predicted-source retrieval |
-| 05 | `05_relevance_and_web_fallback.ipynb` | Context relevance and web fallback policy |
-| 06 | `06_answer_quality_deepeval.ipynb` | Answer-quality proxies and optional DeepEval scoring |
-| 07 | `07_full_agentic_rag_benchmark.ipynb` | End-to-end route, retrieve, fallback, answer, latency summary |
-| 08 | `08_experiments_and_ablation.ipynb` | Variant comparison and failure analysis |
+| 00 | [`00_simple_agentic_rag.ipynb`](notebooks/00_simple_agentic_rag.ipynb) | Minimal end-to-end system walkthrough |
+| 01 | [`01_data_and_chroma_sanity_check.ipynb`](notebooks/01_data_and_chroma_sanity_check.ipynb) | Dataset schema, missing values, collection counts, smoke retrieval |
+| 02 | [`02_router_evaluation.ipynb`](notebooks/02_router_evaluation.ipynb) | Router accuracy, precision/recall/F1 by route, confusion matrix |
+| 03 | [`03_retrieval_evaluation.ipynb`](notebooks/03_retrieval_evaluation.ipynb) | Precision@k, Recall@k, Hit@k, MRR, top-k behavior |
+| 04 | [`04_router_retrieval_cascade.ipynb`](notebooks/04_router_retrieval_cascade.ipynb) | Expected-source vs predicted-source retrieval |
+| 05 | [`05_relevance_and_web_fallback.ipynb`](notebooks/05_relevance_and_web_fallback.ipynb) | Context relevance and web fallback policy |
+| 06 | [`06_answer_quality_deepeval.ipynb`](notebooks/06_answer_quality_deepeval.ipynb) | Answer-quality proxies and optional DeepEval scoring |
+| 07 | [`07_full_agentic_rag_benchmark.ipynb`](notebooks/07_full_agentic_rag_benchmark.ipynb) | End-to-end route, retrieve, fallback, answer, latency summary |
+| 08 | [`08_experiments_and_ablation.ipynb`](notebooks/08_experiments_and_ablation.ipynb) | Variant comparison and failure analysis |
 
 Use the component notebooks to debug. Use the full benchmark to summarize.
 
