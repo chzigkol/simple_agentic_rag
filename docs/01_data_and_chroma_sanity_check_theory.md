@@ -17,7 +17,7 @@ Start with data, not metrics. A low score might mean the model is bad, but it mi
 
 ## Why It Matters
 
-Downstream evals depend on this foundation. Router accuracy, retrieval metrics, fallback behavior, and answer quality can all be misleading if the underlying data or vector collections are broken.
+Downstream evals depend on this foundation. Router accuracy, retrieval metrics, and answer quality can all be misleading if the underlying data or vector collections are broken.
 
 ## Retrieval Smoke Tests
 
@@ -28,3 +28,7 @@ They do not prove retrieval quality. They only catch obvious failures early.
 ## Main Lesson
 
 Do the boring checks first: schemas, nulls, counts, collection setup, and a few manual record inspections. Only trust automated metrics after the data and retrieval substrate are aligned.
+
+## Next
+
+[02 - Router Evaluation Theory](02_router_evaluation_theory.md)

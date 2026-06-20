@@ -23,3 +23,7 @@ Those rows can still be useful for qualitative inspection by looking at the top 
 ## Main Lesson
 
 Use retrieval-specific metrics, not generic quality scores. Retrieval evals answer a narrow question: when searching the correct source, did we find the right evidence?
+
+## Next
+
+[04 - Router Retrieval Cascade Theory](04_router_retrieval_cascade_theory.md)

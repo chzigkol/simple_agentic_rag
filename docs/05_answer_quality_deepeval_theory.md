@@ -1,4 +1,4 @@
-# 06 - Answer Quality Theory
+# 05 - Answer Quality Theory
 
 Answer-quality evaluation checks whether the final answer is useful and relevant to the question.
 
@@ -21,3 +21,7 @@ LLM judge scores can be useful, but they need calibration. Before treating them 
 ## Main Lesson
 
 Do not collapse answer quality into a vague score. Define the specific behavior you care about, use lightweight proxies for iteration, and use LLM judges only when their reliability is understood.
+
+## Next
+
+[06 - Full Agentic RAG Benchmark Theory](06_full_agentic_rag_benchmark_theory.md)

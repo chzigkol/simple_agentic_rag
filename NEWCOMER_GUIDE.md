@@ -23,10 +23,9 @@ out of the project.
    docs/02_router_evaluation_theory.md
    docs/03_retrieval_evaluation_theory.md
    docs/04_router_retrieval_cascade_theory.md
-   docs/05_relevance_and_web_fallback_theory.md
-   docs/06_answer_quality_deepeval_theory.md
-   docs/07_full_agentic_rag_benchmark_theory.md
-   docs/08_experiments_and_ablation_theory.md
+   docs/05_answer_quality_deepeval_theory.md
+   docs/06_full_agentic_rag_benchmark_theory.md
+   docs/07_experiments_and_ablation_theory.md
    ```
 
 3. Set up the environment and run tests
@@ -84,10 +83,9 @@ out of the project.
    notebooks/02_router_evaluation.ipynb
    notebooks/03_retrieval_evaluation.ipynb
    notebooks/04_router_retrieval_cascade.ipynb
-   notebooks/05_relevance_and_web_fallback.ipynb
-   notebooks/06_answer_quality_deepeval.ipynb
-   notebooks/07_full_agentic_rag_benchmark.ipynb
-   notebooks/08_experiments_and_ablation.ipynb
+   notebooks/05_answer_quality_deepeval.ipynb
+   notebooks/06_full_agentic_rag_benchmark.ipynb
+   notebooks/07_experiments_and_ablation.ipynb
    ```
 
    `notebooks/00_simple_agentic_rag.ipynb` is useful as a quick demo, but

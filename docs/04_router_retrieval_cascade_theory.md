@@ -24,3 +24,7 @@ Expected-source retrieval is the control. Predicted-source retrieval shows the r
 ## Main Lesson
 
 Do not debug retrieval failures blindly. First check whether retrieval searched the right collection. In multi-step systems, failures can cascade from one stage into the next.
+
+## Next
+
+[05 - Answer Quality DeepEval Theory](05_answer_quality_deepeval_theory.md)

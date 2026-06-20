@@ -2,11 +2,11 @@
 
 Agentic RAG is a small, production-oriented Python project for evaluating a
 medical question-answering system that can choose between local retrieval and
-web fallback.
+web search.
 
 The project is designed as a practical AI evaluation playground. It demonstrates
 how to move from "the demo worked" to measurable, inspectable engineering
-signals: routing accuracy, retrieval quality, fallback behavior, answer-quality
+signals: routing accuracy, retrieval quality, answer-quality
 proxies, traces, and ablation experiments.
 
 If you are new to the project, start with
@@ -19,7 +19,7 @@ Given a user query, the pipeline:
 
 1. Routes the query to the most appropriate source.
 2. Retrieves context from a local Chroma collection when the source is local.
-3. Falls back to web search for recent, external, or out-of-domain questions.
+3. Uses web search for recent, external, or out-of-domain questions.
 4. Builds a compact prompt from the retrieved context.
 5. Generates a short final answer.
 6. Records row-level evaluation outputs and optional OpenTelemetry traces.
@@ -61,7 +61,6 @@ This repo breaks the system into an evaluation ladder:
 - Router evaluation before retrieval evaluation.
 - Retrieval evaluation before answer-quality evaluation.
 - Cascade evaluation to show how route errors affect retrieval.
-- Fallback evaluation to decide when local context is not good enough.
 - Full benchmark runs for end-to-end summaries.
 - Ablations to compare variants and decide what to improve next.
 
@@ -143,10 +142,9 @@ Each notebook has a matching theory note in `docs/`.
 | 02 | [`02_router_evaluation.ipynb`](notebooks/02_router_evaluation.ipynb) | Router accuracy, precision/recall/F1 by route, confusion matrix |
 | 03 | [`03_retrieval_evaluation.ipynb`](notebooks/03_retrieval_evaluation.ipynb) | Precision@k, Recall@k, Hit@k, MRR, top-k behavior |
 | 04 | [`04_router_retrieval_cascade.ipynb`](notebooks/04_router_retrieval_cascade.ipynb) | Expected-source vs predicted-source retrieval |
-| 05 | [`05_relevance_and_web_fallback.ipynb`](notebooks/05_relevance_and_web_fallback.ipynb) | Context relevance and web fallback policy |
-| 06 | [`06_answer_quality_deepeval.ipynb`](notebooks/06_answer_quality_deepeval.ipynb) | Answer-quality proxies and optional DeepEval scoring |
-| 07 | [`07_full_agentic_rag_benchmark.ipynb`](notebooks/07_full_agentic_rag_benchmark.ipynb) | End-to-end route, retrieve, fallback, answer, latency summary |
-| 08 | [`08_experiments_and_ablation.ipynb`](notebooks/08_experiments_and_ablation.ipynb) | Variant comparison and failure analysis |
+| 05 | [`05_answer_quality_deepeval.ipynb`](notebooks/05_answer_quality_deepeval.ipynb) | Answer-quality proxies and optional DeepEval scoring |
+| 06 | [`06_full_agentic_rag_benchmark.ipynb`](notebooks/06_full_agentic_rag_benchmark.ipynb) | End-to-end route, retrieve, answer, latency summary |
+| 07 | [`07_experiments_and_ablation.ipynb`](notebooks/07_experiments_and_ablation.ipynb) | Variant comparison and failure analysis |
 
 Use the component notebooks to debug. Use the full benchmark to summarize.
 
@@ -166,7 +164,7 @@ TAVILY_API_KEY=...
 ```
 
 OpenAI is needed for LLM-backed generation and router mode `llm`. Tavily is
-needed for live web-search fallback. The local ingestion/retrieval pieces use
+needed for live `Web_Search` routing. The local ingestion/retrieval pieces use
 deterministic embeddings and do not require model downloads.
 
 ## Common Commands

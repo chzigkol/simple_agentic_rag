@@ -1,4 +1,4 @@
-# 08 - Experiments And Ablation Theory
+# 07 - Experiments And Ablation Theory
 
 Ablation evaluation compares variants to decide what to improve next.
 

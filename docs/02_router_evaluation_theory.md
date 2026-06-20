@@ -4,7 +4,7 @@ Router evaluation checks one simple question: given a user query, does the route
 
 ## Core Idea
 
-Evaluate the smallest useful behavior first. Before testing retrieval, fallback, or answer generation, isolate the router so later failures are easier to explain.
+Evaluate the smallest useful behavior first. Before testing retrieval or answer generation, isolate the router so later failures are easier to explain.
 
 ## What The Router Decides
 
@@ -33,3 +33,7 @@ A drop from base accuracy to challenging accuracy is useful signal, not just bad
 Use task-specific metrics, not vague quality scores. Router evals should be categorical and inspectable: correct or incorrect, with failure tables that show what to improve next.
 
 Optional LLM-router comparisons are useful later, but they add cost, latency, and model variability.
+
+## Next
+
+[03 - Retrieval Evaluation Theory](03_retrieval_evaluation_theory.md)
