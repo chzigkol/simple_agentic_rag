@@ -71,17 +71,14 @@ This repo breaks the system into an evaluation ladder:
 │   ├── evaluation_dataset.csv
 │   └── challenging_router_evaluation_dataset.csv
 ├── docs/
-│   └── *_theory.md
+│   ├── 01_<evaluation_topic>_theory.md
+│   ├── ...
+│   └── 08_<evaluation_topic>_theory.md
 ├── notebooks/
-│   ├── 00_simple_agentic_rag.ipynb
-│   ├── 01_data_and_chroma_sanity_check.ipynb
-│   ├── 02_router_evaluation.ipynb
-│   ├── 03_retrieval_evaluation.ipynb
-│   ├── 04_router_retrieval_cascade.ipynb
-│   ├── 05_relevance_and_web_fallback.ipynb
-│   ├── 06_answer_quality_deepeval.ipynb
-│   ├── 07_full_agentic_rag_benchmark.ipynb
-│   └── 08_experiments_and_ablation.ipynb
+│   ├── 00_<quickstart_or_demo>.ipynb
+│   ├── 01_<evaluation_topic>.ipynb
+│   ├── ...
+│   └── 08_<evaluation_topic>.ipynb
 ├── src/agentic_rag/
 │   ├── cli.py
 │   ├── constants.py
