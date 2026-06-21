@@ -150,7 +150,7 @@ Use the component notebooks to debug. Use the full benchmark to summarize.
 
 ## Setup
 
-This project uses `uv` and requires Python `>=3.14,<3.15`.
+This project uses `uv` and requires Python `>=3.13,<3.14`.
 
 ```bash
 uv sync --extra dev
