@@ -22,6 +22,8 @@ The router chooses one source:
 - Failure rows: the exact queries the router got wrong
 - Failure modes: grouped patterns in the mistakes
 
+Overall accuracy tells you how often the router is correct across all examples, but it can hide source-specific mistakes. Precision answers: when the router chooses a route, how trustworthy is that choice? Low precision means the route is being overused. Recall answers: of the examples that should use a route, how many did the router catch? Low recall means the route is being missed. F1 summarizes precision and recall when you need one per-route score.
+
 ## Why Challenging Examples Matter
 
 Easy examples can make a router look solved. Challenging examples reveal ambiguity, mixed intent, recency-sensitive wording, and source-selection weaknesses.
